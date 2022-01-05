@@ -1,0 +1,54 @@
+version: '3.5'
+
+services:
+  registry-service:
+    container_name: eureka-container
+    build:
+      context: ./registry-service
+      dockerfile: Dockerfile
+    ports:
+    - "8761:8761"
+  user-service:
+    container_name: user-service
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka/
+    depends_on:
+      - gateway
+      - registry-service
+    ports:
+    - "4040:4040"
+    links:
+      - mongodb
+  product-service:
+    container_name: product-service
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka/
+    depends_on:
+      - gateway
+      - registry-service
+    ports:
+    - "4041:4041"
+    links:
+      - mongodb
+  gateway:
+    container_name: gateway-service
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka/
+    depends_on:
+      - registry-service
+    ports:
+      - "4042:4042"
+  mongodb:
+    image: mongo:latest
+    container_name: "my-mongodb"
+    ports:
+      - 27017:27017
