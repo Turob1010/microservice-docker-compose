@@ -6,7 +6,7 @@ spring:
   data:
     mongodb:
       database: USER
-      host: my-mongodb
+      host: localhost
       port: 27017
 eureka:
   client:

@@ -6,7 +6,7 @@ spring:
   data:
     mongodb:
       database: PRODUCT
-      host: my-mongodb
+      host: localhost
       port: 27017
 eureka:
   client:
@@ -15,5 +15,5 @@ eureka:
     service-url:
       defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka/}
 
-instance:
+  instance:
     hostname: localhost
